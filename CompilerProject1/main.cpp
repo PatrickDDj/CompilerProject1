@@ -51,15 +51,6 @@ bool is_octal_digit(char c){
     return (c >= '0' && c <= '7');
 }
 
-int check_key_word(string key){
-//    for(string key_word:KEY_WORDS){
-//        if(key_word == key){
-//            return true;
-//        }
-//    }
-//    return false;
-    return KEY_WORDS_MAP[key];
-}
 
 bool is_space(char c){
     return (c=='\n' || c==' ' || c=='\t');
@@ -173,7 +164,7 @@ void handle(){
         //handle identifier or key word
         else if(is_letter(c)){
             string id = check_identifier(cur);
-            int key_id = check_key_word(id);
+            int key_id = KEY_WORDS_MAP[id];
             
             //key_id is not 0, Key Word
             if(key_id!=0){
