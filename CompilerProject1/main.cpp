@@ -165,10 +165,10 @@ string check_operator(int s){
 }
 
 
-void lexical_analysis(){
+void lexical_analysis(string code_path){
     init_key_words_map();
     
-    init_code("p1.txt");
+    init_code(code_path);
     
     while(cur < code.length()){
         char c = code[cur];
@@ -273,6 +273,6 @@ void lexical_analysis(){
 
 int main(){
     
-    lexical_analysis();
+    lexical_analysis("p1.txt");
 
 }
