@@ -23,6 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D60823FF2624222A00BD0143 /* LexicalAnalyzer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LexicalAnalyzer.h; sourceTree = "<group>"; };
 		D61B114E262049660042268E /* CompilerProject1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CompilerProject1; sourceTree = BUILT_PRODUCTS_DIR; };
 		D61B1151262049660042268E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D61B1159262049900042268E /* p1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = p1.txt; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 				D61B115A262049900042268E /* Defitions.h */,
 				D61B1159262049900042268E /* p1.txt */,
 				D61B1151262049660042268E /* main.cpp */,
+				D60823FF2624222A00BD0143 /* LexicalAnalyzer.h */,
 			);
 			path = CompilerProject1;
 			sourceTree = "<group>";
