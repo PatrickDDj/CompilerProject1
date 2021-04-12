@@ -27,6 +27,7 @@
 		D61B1151262049660042268E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D61B1159262049900042268E /* p1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = p1.txt; sourceTree = "<group>"; };
 		D61B115A262049900042268E /* Defitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Defitions.h; sourceTree = "<group>"; };
+		D6DEA39D2623F01700F9EB37 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +60,7 @@
 		D61B1150262049660042268E /* CompilerProject1 */ = {
 			isa = PBXGroup;
 			children = (
+				D6DEA39D2623F01700F9EB37 /* README.md */,
 				D61B115A262049900042268E /* Defitions.h */,
 				D61B1159262049900042268E /* p1.txt */,
 				D61B1151262049660042268E /* main.cpp */,
