@@ -6,17 +6,14 @@
 //
 #include "Defitions.h"
 
-//#include <unistd.h>
-
 map<string, int> KEY_WORDS_MAP;
 
 string code;
 int cur = 0;
+int row = 1;
+int col = 1;
 
-int row_count = 1;
-// int word_count = 0;
-
-vector<pair<string, int> > lex_result;
+vector<pair<vector<string>, int> > lex_result;
 
 map<string, int> word_type_count;
 
@@ -39,8 +36,13 @@ void init_code(string code_path){
 }
 
 
+string row_col(int r, int c){
+    return to_string(r) + "." + to_string(c);
+}
+
+
 bool is_letter(char c){
-    return (c >='a' && c<='z');
+    return (c >='a' && c<='z') || (c >='A' && c<='Z');
 }
 
 bool is_digit(char c){
@@ -69,73 +71,134 @@ bool is_operator(char c){
 
 }
 
-string check_identifier(int s){
+
+void check_string_constant(){
+    int n=1;
+    
+    bool is_valid = false;
+    
+    while(cur+n < code.length()){
+        
+        if(code[cur+n] == '\n'){
+            printf("[ERROR] unqualified string constant '%s' at row [%d] col[%d-%d]\n", code.substr(cur, n).c_str() ,row, col, col+n-1);
+           break;
+        }
+        
+        if(code[cur+n] == '"'){
+            is_valid = true;
+            n++;
+            break;
+        }
+        n++;
+    }
+    
+    string string_constant = code.substr(cur, n);
+//    int len_string_constant = string_constant.length();
+    
+    if(is_valid){
+        lex_result.push_back(make_pair(vector<string>{string_constant, row_col(row, col), row_col(row, col+n-1)}, KEY_WORDS_MAP["String_Constant"]));
+    }
+
+    col += n;
+    cur += n;
+    
+}
+
+void check_identifier(){
     int n = 1;
     
     //for checking "else if"
-    if(code.substr(s, 7) == "else if"){
+    if(code.substr(cur, 7) == "else if"){
         n = 7;
     }
     
     else{
-        while(is_letter(code[s+n]) || is_digit(code[s+n])){
+        while(is_letter(code[cur+n]) || is_digit(code[cur+n])){
             n++;
         }
     }
-    cur = s + n;
     
-    return code.substr(s, n);
+    
+    string id = code.substr(cur, n);
+    int key_id = KEY_WORDS_MAP[id];
+//    int len_id = id.length();
+    
+    
+    lex_result.push_back(make_pair(vector<string>{id, row_col(row, col),
+        row_col(row, col+n-1)}, (key_id==0 ? KEY_WORDS_MAP["Identifier"]:key_id)));
+    
+    cur += n;
+    col += n;
+    
 }
 
 
-string check_decimal_number(int s){
+void check_decimal_number(){
     int n = 1;
     
-    while(is_digit(code[s+n])){
+    string num;
+    
+    while(is_digit(code[cur+n])){
         n++;
     }
     
     //unqualified identifier like '3aa'
-    if(is_letter(code[s+n])){
-        printf("[ERROR] unqualified identifier at row [%d]\n", row_count);
-        exit(0);
+    if(is_letter(code[cur+n])){
+        while(!is_operator(code[cur+n]) && !is_space(code[cur+n])){
+            n++;
+        }
+        printf("[ERROR] unqualified identifier '%s' at row [%d] col[%d-%d]\n", code.substr(cur, n).c_str() ,row, col, col+n-1);
+    }
+    else{
+        num = code.substr(cur, n);
+        lex_result.push_back(make_pair(vector<string>{num, row_col(row, col), row_col(row, col+n-1)}, KEY_WORDS_MAP["Decimal_Number"]));
+        
     }
 
-    cur = s + n;
-    return code.substr(s, n);
+    cur += n;
+    col += n;
+
 }
 
 
-string check_hexademical_number(int s){
+void check_hexademical_number(){
     int n=1;
     
-    char x = code[s+n];
+    char x = code[cur+n];
     if(x == 'x' || x=='X'){
         n++;
     }
-    while(is_hexademical_digit(code[s+n])){
+    while(is_hexademical_digit(code[cur+n])){
         n++;
     }
 
-    cur = s + n;
-    return code.substr(s, n);
+    
+    string num = code.substr(cur, n);
+    lex_result.push_back(make_pair(vector<string>{num, row_col(row, col), row_col(row, col+n-1)}, KEY_WORDS_MAP["Hexademical_Number"]));
+    
+    cur += n;
+    col += n;
 }
 
 
-string check_octal_number(int s){
+void check_octal_number(){
     int n=1;
-    while(is_octal_digit(code[s+n])){
+    while(is_octal_digit(code[cur+n])){
         n++;
     }
-    cur = s + n;
-    return code.substr(s, n);
+    
+    string num = code.substr(cur, n);
+    lex_result.push_back(make_pair(vector<string>{num, row_col(row, col), row_col(row, col+n-1)}, KEY_WORDS_MAP["Octal_Number"]));
+    
+    cur += n;
+    col += n;
 }
 
 
-string check_operator(int s){
+void check_operator(){
     int n=1;
     bool flag = false;
-    char c = code[s];
+    char c = code[cur];
     if(!flag && (c=='(' || c==')' || c=='[' || c== ']' || c=='{' || c=='}' || c=='.' || c=='#'
        || c=='_' || c==',' || c==';' || c=='"' || c=='\'')){
         flag = true;
@@ -143,25 +206,67 @@ string check_operator(int s){
     if(!flag && (c=='!' || c=='&' || c=='~' || c=='^' || c=='|'
        || c=='+' || c=='-' || c=='*' || c=='/' || c=='%'
        || c=='>' || c=='<' || c=='=')){
-        if(code[s+n]=='='){
+        if(code[cur+n]=='='){
             n++;
             flag = true;
         }
     }
-    if(!flag && (c=='&' || c=='|' || c=='>' || c=='<' || c=='+' || c=='-')){
-        if(code[s+n] == code[s]){
+
+    if(!flag && (c=='&' || c=='|' || c=='>' || c=='<' || c=='+' || c=='-' || c=='/')){
+        //    n is 1
+        if(code[cur+n] == code[cur]){
             n++;
             flag = true;
         }
     }
     if(!flag && c=='-'){
-        if(code[s+n] == '>'){
+        if(code[cur+n] == '>'){
             n++;
             flag = true;
         }
     }
-    cur = s + n;
-    return code.substr(s, n);
+    
+    string op = code.substr(cur, n);
+    lex_result.push_back(make_pair(vector<string>{op, row_col(row, col), row_col(row, col+n-1)}, KEY_WORDS_MAP[op]));
+    
+    col += n;
+    cur += n;
+
+}
+
+void check_number(){
+    char c = code[cur];
+    char next = code[cur+1];
+
+    //decimal number : 123, 0
+    if(c!='0' || (c == '0' && !(next == 'x' || next == 'X' || is_octal_digit(next)))){
+        check_decimal_number();
+
+    }
+    
+    else{
+        //hexademical number : 0xAF, 0X111F
+        if(next == 'x' || next == 'X'){
+            check_hexademical_number();
+        }
+        
+        //octal number : 012, 077
+        else{
+            check_octal_number();
+        }
+    }
+}
+    
+void check_space(){
+    char c = code[cur];
+    cur++;
+    if(c=='\n'){
+        row++;
+        col = 1;
+    }
+    else{
+        col++;
+    }
 }
 
 
@@ -174,79 +279,36 @@ void lexical_analysis(string code_path){
         char c = code[cur];
         
         if(is_space(c)){
-            cur++;
-            if(c=='\n'){
-                row_count++;
-            }
+            check_space();
         }
         
         //handle identifier or key word
         else if(is_letter(c)){
-            string id = check_identifier(cur);
-            int key_id = KEY_WORDS_MAP[id];
-            
-            //key_id is not 0, Key Word
-            if(key_id!=0){
-                // cout_info(id, key_id);
-                lex_result.push_back(make_pair(id, key_id));
-            }
-            
-            //key_id is 0, Identifier
-            else{
-                // print_info(id, KEY_WORDS_MAP["Identifier"]);
-                lex_result.push_back(make_pair(id, KEY_WORDS_MAP["Identifier"]));
-            }
+            check_identifier();
         }
         
         
         //handle number (beginning with a digit)
         else if(is_digit(c)){
-            char next = code[cur+1];
-            
-            //decimal number : 123, 0
-            if(c!='0' || (c == '0' && !(next == 'x' || next == 'X' || is_octal_digit(next)))){
-                string decimal_num = check_decimal_number(cur);
-                // print_info(decimal_num, KEY_WORDS_MAP["Decimal_Number"]);
-                lex_result.push_back(make_pair(decimal_num, KEY_WORDS_MAP["Decimal_Number"]));
-            }
-            
-            else{
-                //hexademical number : 0xAF, 0X111F
-                if(next == 'x' || next == 'X'){
-                    string hexademical_num = check_hexademical_number(cur);
-                    // print_info(hexademical_num, KEY_WORDS_MAP["Hexademical_Number"]);
-                    lex_result.push_back(make_pair(hexademical_num, KEY_WORDS_MAP["Hexademical_Number"]));
-                }
-                
-                //octal number : 012, 077
-                else{
-                    string octal_num = check_octal_number(cur);
-                    // print_info(octal_num, KEY_WORDS_MAP["Octal_Number"]);
-                    lex_result.push_back(make_pair(octal_num, KEY_WORDS_MAP["Octal_Number"]));
-                }
-            }
+            check_number();
         }
-        
+        else if(c == '"'){
+            check_string_constant();
+        }
         
         //handle operator (beginning with <, =, ...)
         else if(is_operator(c)){
-            string op = check_operator(cur);
-            // print_info(op, KEY_WORDS_MAP[op]);
-            lex_result.push_back(make_pair(op, KEY_WORDS_MAP[op]));
+            check_operator();
         }
-        
-//        else{
-//            cur++;
-//        }
     }
 
 
     printf("[INFO] results of the lexical analysis : \n");
     for(auto i : lex_result){
-        string word = i.first;
+        vector<string> word_info = i.first;
         int id = i.second;
         // print_info(word, id);
-        printf("< %s  %d >\n", word.c_str(), id);
+        printf("[%s]-[%s] : < %s  %d >\n", word_info[1].c_str(), word_info[2].c_str(), word_info[0].c_str(), id);
         
         //get the word_type("Identifier", ...) through KEY_WORDS[id-1]
         word_type_count[KEY_WORDS[id-1]]++;
@@ -265,14 +327,13 @@ void lexical_analysis(string code_path){
     
     
 
-    printf("[INFO] total : %lu word(s) , %d row(s)\n", lex_result.size(), row_count);
+    printf("[INFO] total : %d word(s) , %d row(s)\n", lex_result.size(), row);
     printf("-----------------------------------------\n\n");
-
 
 }
 
 int main(){
     
     lexical_analysis("p1.txt");
-
+ 
 }

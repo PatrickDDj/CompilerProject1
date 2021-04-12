@@ -1,3 +1,7 @@
+ad 0x1234 012
+as "123
+1sdafa
+"afafbjafafjgafj"
 int num1,num2,op,ans;
 get(num1,num2,op);
 if(op==0)
@@ -21,3 +25,5 @@ if(op==3)
 put(ans);
 
 else if()
+33aa
+//

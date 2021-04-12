@@ -17,7 +17,7 @@
 
 using namespace std;
 
-
+#define ERROR "ERROR"
 //#define MAIN 0
 //
 //
@@ -77,7 +77,7 @@ using namespace std;
 
 const vector<string> KEY_WORDS = {
     "main", "include", "void", "return",
-    "int", "bool", "float", "double","char",
+    "int", "bool", "float", "double","char","string",
     
     "(", ")", "[", "]", "{", "}", ".", "#", "_", ",", ";", "'", "\"",
     
@@ -90,10 +90,13 @@ const vector<string> KEY_WORDS = {
     "&&", "||",
     "+=", "-=", "/=","*=", "^=", "&=", "|=", "%=", "~=",
     
+    "//",
+    
     "Identifier",
     "Decimal_Number", //十进制
     "Hexademical_Number", //十六进制
     "Octal_Number", //八进制
+    "String_Constant",
     
     "if", "else", "while", "for", "else if",
     "get", "put"
