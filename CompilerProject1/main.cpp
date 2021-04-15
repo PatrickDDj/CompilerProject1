@@ -9,6 +9,10 @@
 
 
 int main(){
-    LexicalAnalyzer lex("p1.txt");
-    lex.print_lexical_analysis();
+    LexicalAnalyzer lex("p3.txt");
+//    lex.print_lexical_analysis();
+//    for(auto i:KEY_WORDS){
+//        cout << i << endl;
+//    }
+
 }

@@ -13,8 +13,6 @@
 class LexicalAnalyzer{
     
 public:
-    
-    map<string, int> KEY_WORDS_MAP;
     vector<pair<vector<string>, int> > lex_result;
     
     
@@ -26,7 +24,9 @@ public:
     }
     
     void print_lexical_analysis(){
+        printf("-----------------------------------------\n");
         printf("[INFO] results of the lexical analysis : \n");
+        printf("-----------------------------------------\n");
         for(auto i : lex_result){
             vector<string> word_info = i.first;
             int id = i.second;
@@ -36,21 +36,24 @@ public:
             //get the word_type("Identifier", ...) through KEY_WORDS[id-1]
             word_type_count[KEY_WORDS[id-1]]++;
         }
-        printf("-----------------------------------------\n\n");
+        printf("\n\n");
         
 
+        printf("-----------------------------------------\n");
         printf("[INFO] occurrences of different words :  \n");
+        printf("-----------------------------------------\n");
         for(auto i:word_type_count){
             // cout << i.first << " : " << i.second << endl;
             string word = i.first;
             int count = i.second;
             printf("%s : %d time(s)\n", word.c_str(), count);
         }
-        printf("-----------------------------------------\n\n");
+        printf("\n\n");
         
         
 
-        printf("[INFO] total : %d word(s) , %d row(s)\n", lex_result.size(), row);
+        printf("-----------------------------------------\n");
+        printf("[INFO] total : %lu word(s) , %d row(s)\n", lex_result.size(), row);
         printf("-----------------------------------------\n\n");
     }
     
@@ -246,7 +249,7 @@ private:
         bool flag = false;
         char c = code[cur];
         if(!flag && (c=='(' || c==')' || c=='[' || c== ']' || c=='{' || c=='}' || c=='.' || c=='#'
-           || c=='_' || c==',' || c==';' || c=='"' || c=='\'')){
+           ||  c==',' || c==';' || c=='"' || c=='\'')){
             flag = true;
         }
         if(!flag && (c=='!' || c=='&' || c=='~' || c=='^' || c=='|'
