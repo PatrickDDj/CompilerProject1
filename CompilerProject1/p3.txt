@@ -1,0 +1,13 @@
+int a = 0;
+int b = 012;
+int c = 0xFFF0;
+string s = "I am a String";
+string t = "I am an unqualified String;
+int 3a;
+
+if(a==0){
+    a=0X4FAA;
+}
+else if(a==1){
+    int 12ab;
+}
