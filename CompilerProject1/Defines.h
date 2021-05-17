@@ -5,8 +5,8 @@
 //  Created by PatrickDD on 2021/3/29.
 //
 
-#ifndef Defitions_h
-#define Defitions_h
+#ifndef Defines_h
+#define Defines_h
 
 #include <map>
 #include <vector>
@@ -48,4 +48,4 @@ const vector<string> KEY_WORDS = {
 
 map<string, int> KEY_WORDS_MAP;
 
-#endif /* Defitions_h */
+#endif /* Defines_h */
