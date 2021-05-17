@@ -27,7 +27,7 @@
 		D61B114E262049660042268E /* CompilerProject1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CompilerProject1; sourceTree = BUILT_PRODUCTS_DIR; };
 		D61B1151262049660042268E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D61B1159262049900042268E /* p1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = p1.txt; sourceTree = "<group>"; };
-		D61B115A262049900042268E /* Defitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Defitions.h; sourceTree = "<group>"; };
+		D62A111826520E750099E4AF /* Defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
 		D6413E2A2627DE0D00A0748E /* p2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = p2.txt; sourceTree = "<group>"; };
 		D6413E2B2627DE0D00A0748E /* p3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = p3.txt; sourceTree = "<group>"; };
 		D6DEA39D2623F01700F9EB37 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -64,9 +64,9 @@
 		D61B1150262049660042268E /* CompilerProject1 */ = {
 			isa = PBXGroup;
 			children = (
+				D62A111826520E750099E4AF /* Defines.h */,
 				D6413E2A2627DE0D00A0748E /* p2.txt */,
 				D6413E2B2627DE0D00A0748E /* p3.txt */,
-				D61B115A262049900042268E /* Defitions.h */,
 				D61B1159262049900042268E /* p1.txt */,
 				D61B1151262049660042268E /* main.cpp */,
 				D60823FF2624222A00BD0143 /* LexicalAnalyzer.h */,

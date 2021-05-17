@@ -4,7 +4,7 @@
 //
 //  Created by PatrickDD on 2021/4/12.
 //
-#include "Defitions.h"
+#include "Defines.h"
 
 #ifndef LexicalAnalyzer_h
 #define LexicalAnalyzer_h
